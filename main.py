@@ -31,7 +31,7 @@ co9 = "#e9edf5"
 
 janela = Tk()
 janela.title('')
-janela.geometry('900x600')
+janela.geometry('800x2500')
 
 janela.configure(background=co9)
 janela.resizable(width=FALSE, height=FALSE)
@@ -46,11 +46,14 @@ frameCima = Frame(janela, width=1043, height=50, bg=co1, relief=FLAT)
 frameCima.grid(row=0, column=0)
 
 
-frameMeio = Frame(janela, width=1043, height=303, bg=co1, pady=20, relief=FLAT)
+frameMeio = Frame(janela, width=1043, height=250, bg=co1, pady=20, relief=FLAT)
 frameMeio.grid(row=1, column=0, pady=1, padx=0, sticky=NSEW)
 
-frameBaixo = Frame(janela, width=1043, height=300, bg=co1, relief=FLAT)
+frameBaixo = Frame(janela, width=1043, height=350, bg=co1, relief=FLAT)
 frameBaixo.grid(row=2, column=0, pady=0, padx=1, sticky=NSEW)
+
+frameBaixo2 = Frame(janela, width=1043, height=350, bg=co1, relief=FLAT)
+frameBaixo2.grid(row=3, column=0, pady=0, padx=0, sticky=NSEW)
 
 #Trabalhando no frame cima ----------------
 
@@ -166,8 +169,103 @@ b_item_empr.place(x=330, y=185)
 
 
 
+# tabela -----------------------------------------------------------
+
+# creating a treeview with dual scrollbars
+#tabela itens
+
+tabela_head = ['Id','Nome', 'Tipo','Qtd Total', 'Qtd Estoque', 'Qtd Emprestada']
+
+lista_itens = []
+
+global tree
+
+tree = ttk.Treeview(frameBaixo, selectmode="extended",columns=tabela_head, show="headings")
+
+# vertical scrollbar
+vsb = ttk.Scrollbar(frameBaixo, orient="vertical", command=tree.yview)
+
+# horizontal scrollbar
+hsb = ttk.Scrollbar(frameBaixo, orient="horizontal", command=tree.xview)
+
+tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+tree.grid(column=0, row=0, sticky='nsew')
+vsb.grid(column=1, row=0, sticky='ns')
+hsb.grid(column=0, row=1, sticky='ew')
+frameBaixo.grid_rowconfigure(0, weight=12)
+
+hd=["center","center","center","center","center","center"]
+h=[40,150,100,130,130,160]
+n=0
+
+for col in tabela_head:
+    tree.heading(col, text=col.title(), anchor=CENTER)
+    # adjust the column's width to the header string
+    tree.column(col, width=h[n],anchor=hd[n])
+    n+=1
 
 
+# inserindo os itens dentro da tabela
+for item in lista_itens:
+    tree.insert('', 'end', values=item)
 
+
+quantidade = [8888,88]
+
+for iten in lista_itens:
+    quantidade.append(iten[6])
+
+Total_valor = sum(quantidade)
+Total_itens = len(quantidade)
+
+#l_total['text'] = 'R$ {:,.2f}'.format(Total_valor)
+#l_qtd['text'] = Total_itens
+
+
+#tabela funcionarios
+# creating a treeview with dual scrollbars
+tabela_head2 = ['Id','Nome', 'Cargo', 'Itens Emprestados']
+
+lista_itens2 = []
+
+global tree2
+
+tree2 = ttk.Treeview(frameBaixo2, selectmode="extended",columns=tabela_head2, show="headings")
+
+# vertical scrollbar
+vsb2 = ttk.Scrollbar(frameBaixo2, orient="vertical", command=tree2.yview)
+
+# horizontal scrollbar
+hsb2 = ttk.Scrollbar(frameBaixo2, orient="horizontal", command=tree2.xview)
+
+tree2.configure(yscrollcommand=vsb2.set, xscrollcommand=hsb2.set)
+tree2.grid(column=0, row=0, sticky='nsew')
+vsb2.grid(column=1, row=0, sticky='ns')
+hsb2.grid(column=0, row=1, sticky='ew')
+frameBaixo2.grid_rowconfigure(0, weight=12)
+
+hd2=["center","center","center","center"]
+h2=[40,150,100,160]
+n2=0
+
+for col in tabela_head2:
+    tree2.heading(col, text=col.title(), anchor=CENTER)
+    # adjust the column's width to the header string
+    tree2.column(col, width=h[n2],anchor=hd[n2])
+    n+=1
+
+
+# inserindo os itens dentro da tabela
+for item in lista_itens:
+    tree2.insert('', 'end', values=item)
+
+
+quantidade2 = [8888,88]
+
+for iten in lista_itens:
+    quantidade2.append(iten[6])
+
+Total_valor2 = sum(quantidade)
+Total_itens2 = len(quantidade)
 
 janela.mainloop()
